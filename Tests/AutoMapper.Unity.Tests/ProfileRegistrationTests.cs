@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Linq;
+
+using AutoMapper.Unity.TestProfiles;
 
 using FluentAssertions;
 
@@ -25,31 +28,35 @@ namespace AutoMapper.Unity.Tests
 		[Fact]
 		public void ShouldRegisterWithNameFromType()
 		{
-			_container.RegisterMappingProfile<TestProfile>();
+			_container.RegisterMappingProfile<MinimalProfile>();
 			_container.Registrations.Should()
 				.ContainSingle(cr =>
-					cr.Name == typeof (TestProfile).FullName
-					&& cr.MappedToType == typeof (TestProfile)
+					cr.Name == typeof (MinimalProfile).FullName
+					&& cr.MappedToType == typeof (MinimalProfile)
 					&& cr.RegisteredType == typeof (Profile));
 		}
 
 		[Fact]
 		public void ShouldRegisterSingleton()
 		{
-			_container.RegisterMappingProfile<TestProfile>();
+			_container.RegisterMappingProfile<MinimalProfile>();
 
-			var name = typeof (TestProfile).FullName;
+			var name = typeof (MinimalProfile).FullName;
 			_container
 				.Resolve<Profile>(name)
 				.Should().BeSameAs(
 					_container.Resolve<Profile>(name)
 				);
-
 		}
 
-		private class TestProfile : Profile
+		[Fact]
+		public void ShouldRegisterAllFromAssembly()
 		{
-			
+			_container.RegisterMappingProfilesFromAssembly(typeof(MinimalProfile).Assembly);
+			_container
+				.ResolveAll<Profile>().Select(p => p.GetType())
+				// ReSharper disable once CoVariantArrayConversion
+				.Should().BeEquivalentTo(new[] {typeof (MinimalProfile), typeof (SecondProfile)});
 		}
 	}
 }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 using AutoMapper.Mappers;
 
@@ -8,10 +11,24 @@ namespace AutoMapper.Unity
 {
 	public static class ContainerMapperExtensions
 	{
+		private static IUnityContainer RegisterMappingProfile(IUnityContainer container, Type profileType)
+		{
+			return container.RegisterType(typeof(Profile), profileType, profileType.FullName, new ContainerControlledLifetimeManager());
+		}
+
+		public static void RegisterMappingProfilesFromAssembly(this IUnityContainer container, Assembly assembly)
+		{
+			foreach (var type in GetAccessibleTypes(assembly)
+				.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition && typeof(Profile).IsAssignableFrom(t)))
+			{
+				RegisterMappingProfile(container, type);
+			}
+		}
+
 		public static void RegisterMappingProfile<T>(this IUnityContainer container)
 			where T : Profile
 		{
-			container.RegisterType<Profile,T>(typeof(T).FullName, new ContainerControlledLifetimeManager());
+			RegisterMappingProfile(container, typeof(T));
 		}
 
 		public static void RegisterMapper(this IUnityContainer container)
@@ -27,5 +44,18 @@ namespace AutoMapper.Unity
 			));
 			container.RegisterType<IMappingEngine, MappingEngine>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(IConfigurationProvider)));
 		}
+
+		public static IEnumerable<Type> GetAccessibleTypes(this Assembly assembly)
+		{
+			try
+			{
+				return assembly.DefinedTypes.Select(t => t.AsType());
+			}
+			catch (ReflectionTypeLoadException ex)
+			{
+				return ex.Types.Where(t => t != null);
+			}
+		}
+
 	}
 }

@@ -79,6 +79,10 @@
       <Project>{dab3c199-51d9-4743-9c0a-2af4413b0a75}</Project>
       <Name>AutoMapper.Unity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AutoMapper.Unity.TestProfiles\AutoMapper.Unity.TestProfiles.csproj">
+      <Project>{4a9a7f49-26a4-4d98-af1d-8dc98e2296c2}</Project>
+      <Name>AutoMapper.Unity.TestProfiles</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
