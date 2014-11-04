@@ -35,7 +35,7 @@ namespace AutoMapper.Unity
 		{
 			container.RegisterType<IConfigurationProvider>(new ContainerControlledLifetimeManager(), new InjectionFactory(c =>
 			{
-				var configuration = new ConfigurationStore(new TypeMapFactory(), MapperRegistry.AllMappers());
+				var configuration = new ConfigurationStore(new TypeMapFactory(), MapperRegistry.Mappers);
 				configuration.ConstructServicesUsing(t => container.Resolve(t));
 				foreach (var profile in c.ResolveAll<Profile>())
 					configuration.AddProfile(profile);	
