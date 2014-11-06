@@ -16,22 +16,23 @@ namespace AutoMapper.Unity
 			return container.RegisterType(typeof(Profile), profileType, profileType.FullName, new ContainerControlledLifetimeManager());
 		}
 
-		public static void RegisterMappingProfilesFromAssembly(this IUnityContainer container, Assembly assembly)
+		public static IUnityContainer RegisterMappingProfilesFromAssembly(this IUnityContainer container, Assembly assembly)
 		{
 			foreach (var type in GetAccessibleTypes(assembly)
 				.Where(t => !t.IsAbstract && !t.IsGenericTypeDefinition && typeof(Profile).IsAssignableFrom(t)))
 			{
 				RegisterMappingProfile(container, type);
 			}
+			return container;
 		}
 
-		public static void RegisterMappingProfile<T>(this IUnityContainer container)
+		public static IUnityContainer RegisterMappingProfile<T>(this IUnityContainer container)
 			where T : Profile
 		{
-			RegisterMappingProfile(container, typeof(T));
+			return RegisterMappingProfile(container, typeof(T));
 		}
 
-		public static void RegisterMapper(this IUnityContainer container)
+		public static IUnityContainer RegisterMapper(this IUnityContainer container)
 		{
 			container.RegisterType<IConfigurationProvider>(new ContainerControlledLifetimeManager(), new InjectionFactory(c =>
 			{
@@ -43,9 +44,10 @@ namespace AutoMapper.Unity
 			}
 			));
 			container.RegisterType<IMappingEngine, MappingEngine>(new ContainerControlledLifetimeManager(), new InjectionConstructor(typeof(IConfigurationProvider)));
+			return container;
 		}
 
-		public static IEnumerable<Type> GetAccessibleTypes(this Assembly assembly)
+		private static IEnumerable<Type> GetAccessibleTypes(this Assembly assembly)
 		{
 			try
 			{
