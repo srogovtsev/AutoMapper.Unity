@@ -2,8 +2,5 @@
 {
 	public class MinimalProfile: Profile
 	{
-	    protected override void Configure()
-	    {
-	    }
 	}
 }
