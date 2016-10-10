@@ -2,8 +2,5 @@
 {
 	public class SecondProfile: Profile
 	{
-	    protected override void Configure()
-	    {
-	    }
 	}
 }
