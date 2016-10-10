@@ -37,8 +37,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=5.0.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.5.0.2\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentAssertions">
@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Sources\AutoMapper.Unity\AutoMapper.Unity.csproj">
-      <Project>{dab3c199-51d9-4743-9c0a-2af4413b0a75}</Project>
+      <Project>{c4b49c5b-c9f3-4db1-ae96-99c1707d77a5}</Project>
       <Name>AutoMapper.Unity</Name>
     </ProjectReference>
     <ProjectReference Include="..\AutoMapper.Unity.TestProfiles\AutoMapper.Unity.TestProfiles.csproj">
